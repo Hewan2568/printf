@@ -1,14 +1,36 @@
-.TH _printf 3 "23 November 2016" "0.08" "_printf man page"
+.\" Manpage for _printf
+.TH man 8 "26 July 2021" "1.0" "_printf man page"
 .SH NAME
-_printf - sends the formatted input to the the stdout.
+_printf - format and write a string, character or integer to stdout
 .SH SYNOPSIS
-Simplified version of printf
+#include "holberton.h"
+.br
+#include <stdarg.h>
+.br
+#include <stdlib.h>
+.br
+.br
+int _printf(const char *format, ...)
+
 .SH DESCRIPTION
-_printf is a function which produces output according to input or format. It cheks for formatters such as: "c", "s", "%", "d" and "i" and primitive types.
-.SH OPTIONS
-No options. Flags and options are not needed
+The function _printf() produces output according to format described below, writes output to stdout.
+
+.SS Return value
+.br
+upon successful return, this function returns a number of characters
+printed (excluding the null byte)
+
+if an output error is encountered, a negative value is returned
+
+.SS The format string
+It is a character string, composed of zero or more directives, ordinary characters which are copied and unchanged to the stdout, each conversion specifier is introduced with %
+
+.br
 .SH BUGS
-.B Check out Betty for more info on this:
-https://github.com/holbertonschool/Betty/blob/master/betty-style.pl and https://github.com/holbertonschool/Betty/blob/master/betty-doc.pl.
-.SH AUTHOR
-Terry Onaiwu, Hewan Tegenie
+No known bugs
+.SS colphon
+.br
+This page was created in collaboration with ALX-Holberton.
+
+.SH AUTHORS
+.Terry Onaiwu and Hewan Tegenie
