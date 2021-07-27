@@ -1,85 +1,45 @@
-#include <stdio.h>
-#include <stdarg.h>
-#include <stdlib.h>
-#include <unistd.h>
 #include "holberton.h"
-
-void _putchar_c(char c)
-{
-	write(1, &c, 1);
-}
-
-void _putchar(va_list a)
-{
-	char c;
-
-	c = va_arg(a, int);
-	write(1, &c, 1);
-}
-
-void print_str(va_list a)
-{
-	char *c;
-
-	c = va_arg(a, char *);
-	while (*c != '\0')
-	{
-		_putchar_c(*c++);
-	}
-}
-
-void print_int()
-{
-	
-}
-
+#include <stdlib.h>
 
 /**
- * _printf - prints output according to a format.
- * @format: input string.
- * Return: int, number of characters printed,
+ * _printf - prints any string with certain flags for modification
+ * @format: the string of characters to write to buffer
+ * Return: an integer that counts how many writes to the buffer were made
  */
-
 int _printf(const char *format, ...)
 {
-	va_list a;
-	int i, j, count;
+	int i = 0, var = 0;
+	va_list v_ls;
+	buffer *buf;
 
-	cs_t cspec[] = {
-		{'c', _putchar},
-		{'s', print_str},
-		{'d', print_int},
-		{'i', print_int}
-	};
-
+	buf = buf_new();
+	if (buf == NULL)
+		return (-1);
 	if (format == NULL)
-		return (0);
-
-	i = j = count = 0;
-	va_start(a, format);
+		return (-1);
+	va_start(v_ls, format);
 	while (format[i])
 	{
+		buf_wr(buf);
 		if (format[i] == '%')
 		{
-			j = 0;
-			while (j < 4)
+			var = opid(buf, v_ls, format, i);
+			if (var < 0)
 			{
-				if (format[i + 1] == cspec[j].cs &&
-				    format[i + 1] != '%')
-				{
-					cspec[j].f(a);
-					i++;
-				}
-				j++;
+				i = var;
+				break;
 			}
-			i++;
-			_putchar_c(format[i]);
+			i += var;
+			continue;
 		}
-		else
-			_putchar_c(format[i]);
-		count++;
+		buf->str[buf->index] = format[i];
+		buf_inc(buf);
 		i++;
-
 	}
-	return (count);
+	buf_write(buf);
+	if (var >= 0)
+		i = buf->overflow;
+	buf_end(buf);
+	va_end(v_ls);
+	return (i);
 }
